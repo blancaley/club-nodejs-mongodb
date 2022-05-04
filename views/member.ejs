@@ -7,15 +7,10 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>Members List</h1>
- <ul>
-    <% members.forEach(member => { %>
-      <a href="/member/<%= member._id %>">
-        <li>
-          <%= member.name %>
-        </li> 
-      </a>
-    <% }); %>
-  </ul>
+  <h1><%= name %></h1>
+  <p><%= email %></p>
+  <p><%= phoneNumber %></p>
+  <p><%= dateRegistered %></p>
+  <p><%= notes %></p>
 </body>
 </html>

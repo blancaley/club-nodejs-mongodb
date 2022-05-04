@@ -1,5 +1,5 @@
 import express from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 const port = 3000;
 const app = express();
@@ -13,7 +13,7 @@ await client.connect();
 const db = client.db("club");
 const membersCollection = db.collection("members");
 
-// Skapa en route
+// Create a route for members list
 app.get('/members', async (req, res) => {
   const members = await membersCollection.find({}).toArray();
   console.log(members)
@@ -21,5 +21,18 @@ app.get('/members', async (req, res) => {
     members
   });
 });
+
+// Create a route for individual member
+app.get("/member/:id", async (req, res) => {
+  const member = await membersCollection.findOne({_id: ObjectId(req.params.id)});
+  console.log(member)
+  res.render("member", {
+    name: member.name,
+    email: member.email,
+    phoneNumber: member.phoneNumber,
+    dateRegistered: member.dateRegistered,
+    notes: member.notes
+  });
+})
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
