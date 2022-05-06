@@ -25,14 +25,20 @@ app.get('/members', async (req, res) => {
 // Create a route for individual member
 app.get("/member/:id", async (req, res) => {
   const member = await membersCollection.findOne({_id: ObjectId(req.params.id)});
-  console.log(member)
   res.render("member", {
     name: member.name,
     email: member.email,
     phoneNumber: member.phoneNumber,
     dateRegistered: member.dateRegistered,
-    notes: member.notes
+    notes: member.notes,
+    member: member
   });
+})
+
+// Create a route to delete a member
+app.get("/member/delete/:id", (req, res) => {
+  membersCollection.deleteOne({_id: ObjectId(req.params.id)});
+  res.render("deleteSuccess");
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
