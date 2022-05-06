@@ -7,7 +7,7 @@ const app = express();
 app.set("views", "./views");
 app.set("view engine", "ejs");
 
-// Läs från Mongo DB
+// Read from database MongoDB
 const client = new MongoClient("mongodb://localhost:27017");
 await client.connect();
 const db = client.db("club");
@@ -39,6 +39,12 @@ app.get("/member/:id", async (req, res) => {
 app.get("/member/delete/:id", (req, res) => {
   membersCollection.deleteOne({_id: ObjectId(req.params.id)});
   res.render("deleteSuccess");
+})
+
+// Create a route to show form for registering new member
+app.get("/register", async (req, res) => {
+  res.render("register")
+  //const member = await membersCollection.insertOne()
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
