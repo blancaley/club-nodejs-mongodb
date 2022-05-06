@@ -15,10 +15,14 @@ await client.connect();
 const db = client.db("club");
 const membersCollection = db.collection("members");
 
+// Create a route for homepage
+app.get("/", (req, res) => {
+  res.render("homepage")
+})
+
 // Create a route for members list
-app.get('/members', async (req, res) => {
+app.get("/members", async (req, res) => {
   const members = await membersCollection.find({}).toArray();
-  console.log(members)
   res.render("members", {
     members
   });
