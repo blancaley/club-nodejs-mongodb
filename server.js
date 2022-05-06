@@ -6,6 +6,8 @@ const app = express();
 
 app.set("views", "./views");
 app.set("view engine", "ejs");
+// {extended:true} för att ta bort varningen
+app.use(express.urlencoded({extended:true}));
 
 // Read from database MongoDB
 const client = new MongoClient("mongodb://localhost:27017");
@@ -42,9 +44,14 @@ app.get("/member/delete/:id", (req, res) => {
 })
 
 // Create a route to show form for registering new member
-app.get("/register", async (req, res) => {
+app.get("/register", (req, res) => {
   res.render("register")
-  //const member = await membersCollection.insertOne()
+})
+
+// Save new member in database
+app.post("/register", async (req, res) => {
+  await membersCollection.insertOne(req.body);
+  res.redirect("/members")
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
