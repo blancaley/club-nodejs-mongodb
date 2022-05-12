@@ -25,15 +25,13 @@ app.get("/", (req, res) => {
 app.get("/members", async (req, res) => {
   let members;
 
-  if(req.query.order === "name_asc") {
-    return members = await membersCollection.find({}).sort({"name": 1, "_id": 1}).toArray();
+  if(req.query.order === "name-asc") {
+    members = await membersCollection.find({}).sort({"name": 1, "_id": 1}).toArray();
+  } else if (req.query.order === "name-desc") {
+    members = await membersCollection.find({}).sort({"name": -1, "_id": 1}).toArray();
+  } else {
+    members = await membersCollection.find({}).toArray();
   }
-
-  if(req.query.order === "name_desc") {
-    return members = await membersCollection.find({}).sort({"name": -1, "_id": 1}).toArray();
-  }
-
-  members = await membersCollection.find({}).toArray();
   res.render("pages/members", {
     members
   });
