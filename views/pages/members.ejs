@@ -1,6 +1,9 @@
-<%- include("header") %>
+<%- include("../partials/header") %>
 
   <h1>Members List</h1>
+  <button id="orderNameDesc">Name A–Z</button></a>
+  <button id="orderNameAsc">Name Z–A</button></a>
+
  <ul>
     <% members.forEach(member => { %>
       <a href="/member/<%= member._id %>">
@@ -10,5 +13,4 @@
       </a>
     <% }); %>
   </ul>
-
-<%- include("footer") %>
+<%- include("../partials/footer") %>

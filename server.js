@@ -6,8 +6,9 @@ const app = express();
 
 app.set("views", "./views");
 app.set("view engine", "ejs");
-// {extended:true} för att ta bort varningen
+// Middleware för att läsa post-data ({extended:true} för att ta bort varningen)
 app.use(express.urlencoded({extended:true}));
+app.use(express.static('public'))
 
 // Read from database MongoDB
 const client = new MongoClient("mongodb://localhost:27017");
@@ -17,13 +18,23 @@ const membersCollection = db.collection("members");
 
 // Create a route for homepage
 app.get("/", (req, res) => {
-  res.render("homepage")
+  res.render("pages/homepage")
 })
 
 // Create a route for members list
 app.get("/members", async (req, res) => {
-  const members = await membersCollection.find({}).toArray();
-  res.render("members", {
+  let members;
+
+  if(req.query.order === "name_asc") {
+    return members = await membersCollection.find({}).sort({"name": 1, "_id": 1}).toArray();
+  }
+
+  if(req.query.order === "name_desc") {
+    return members = await membersCollection.find({}).sort({"name": -1, "_id": 1}).toArray();
+  }
+
+  members = await membersCollection.find({}).toArray();
+  res.render("pages/members", {
     members
   });
 });
@@ -31,7 +42,7 @@ app.get("/members", async (req, res) => {
 // Create a route for individual member
 app.get("/member/:id", async (req, res) => {
   const member = await membersCollection.findOne({_id: ObjectId(req.params.id)});
-  res.render("member", {
+  res.render("pages/member", {
     name: member.name,
     email: member.email,
     phoneNumber: member.phoneNumber,
@@ -44,18 +55,18 @@ app.get("/member/:id", async (req, res) => {
 // Create a route to delete a member
 app.get("/member/delete/:id", (req, res) => {
   membersCollection.deleteOne({_id: ObjectId(req.params.id)});
-  res.render("deleteSuccess");
+  res.render("pages/deleteSuccess");
 })
 
 // Create a route to show form for registering new member
 app.get("/register", (req, res) => {
-  res.render("register")
+  res.render("pages/register")
 })
 
 // Save new member in database
 app.post("/register", async (req, res) => {
   await membersCollection.insertOne(req.body);
-  res.redirect("/members")
+  res.redirect("pages/members")
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
