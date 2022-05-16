@@ -5,6 +5,7 @@
   <p><%= phoneNumber %></p>
   <p><%= dateRegistered %></p>
   <p><%= notes %></p>
+  <a href="/member/update/<%= member._id %>"><button>Edit</button></a>
   <a href="/member/delete/<%= member._id %>"><button>Delete</button></a>
 
 <%- include("../partials/footer") %>

@@ -67,4 +67,9 @@ app.post("/register", async (req, res) => {
   res.redirect("pages/members")
 })
 
+// Update member info
+app.get("/member/update", (req, res) => {
+  
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
