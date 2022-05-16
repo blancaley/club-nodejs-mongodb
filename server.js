@@ -75,13 +75,15 @@ app.get("/member/update/:id", async (req, res) => {
     email: member.email,
     phoneNumber: member.phoneNumber,
     dateRegistered: member.dateRegistered,
-    notes: member.notes
+    notes: member.notes,
+    member: member
   });
 })
 
 // Update member info
 app.post("/member/update/:id", async (req, res) => {
-  
+  await membersCollection.updateOne({_id: ObjectId(req.params.id)}, {$set: req.body})
+  res.redirect(`/member/${ObjectId(req.params.id)}`)
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

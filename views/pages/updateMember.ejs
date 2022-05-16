@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 <h1>Edit info</h1>
-<form action="/register" method="post">
+<form action="/member/update/<%= member._id %>" method="post">
   <label for="name">Name</label>
   <input type="text" id="name" name="name" value="<%= name %>">
 
