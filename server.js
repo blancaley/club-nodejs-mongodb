@@ -64,12 +64,12 @@ app.get("/register", (req, res) => {
 // Save new member in database
 app.post("/register", async (req, res) => {
   await membersCollection.insertOne(req.body);
-  res.redirect("pages/members")
+  res.redirect("/members")
 })
 
 // Update member info
 app.get("/member/update", (req, res) => {
-  
+
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
