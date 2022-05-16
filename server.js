@@ -67,9 +67,21 @@ app.post("/register", async (req, res) => {
   res.redirect("/members")
 })
 
-// Update member info
-app.get("/member/update", (req, res) => {
+// Show form to update member info
+app.get("/member/update/:id", async (req, res) => {
+  const member = await membersCollection.findOne({_id: ObjectId(req.params.id)});
+  res.render("pages/updateMember", {
+    name: member.name,
+    email: member.email,
+    phoneNumber: member.phoneNumber,
+    dateRegistered: member.dateRegistered,
+    notes: member.notes
+  });
+})
 
+// Update member info
+app.post("/member/update/:id", async (req, res) => {
+  
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
